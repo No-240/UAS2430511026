@@ -27,9 +27,29 @@ if ($cari != '') {
     <title>Pencatatan Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <style>
+    .video-bg-wrapper {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
+    .video-bg-wrapper video {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        opacity: 0.15; /* sesuaikan gelap/terangnya */
+    }
+    </style>
 </head>
 
 <body class="bg-light">
+
+<div class="video-bg-wrapper">
+    <video autoplay muted loop playsinline>
+        <source src="video/13752081_3840_2160_30fps.mp4" type="video/mp4">
+    </video>
+</div>
 
 <div class="container mt-5">
     <h2 class="mb-4">Data Pencatatan Barang</h2>
