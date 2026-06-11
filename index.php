@@ -1,4 +1,13 @@
- <?php
+<?php
+session_start();
+
+// Cek apakah user sudah punya tiket login
+if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
+    // Kalau belum login, tendang balik ke halaman login
+    header("Location: login.php");
+    exit(); // Hentikan eksekusi kode di bawahnya
+}
+
 include "koneksi.php";
 
 $cari = isset($_GET['cari']) ? mysqli_real_escape_string($conn, $_GET['cari']) : '';
@@ -26,6 +35,7 @@ if ($cari != '') {
     <h2 class="mb-4">Data Pencatatan Barang</h2>
 
     <a href="tambah.php" class="btn btn-primary mb-3">Tambah Barang</a>
+    <a href="logout.php" class="btn btn-danger" onclick="return confirm('Yakin ingin keluar?')">Logout</a>
 
     <table class="table table-bordered table-striped" id="tabelBarang">
         <thead class="table-dark">
@@ -83,6 +93,40 @@ if ($cari != '') {
                 url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
             }
         });
+    });
+</script>
+
+<script>
+    // Buat AudioContext sekali pakai
+    function playSound(type) {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'click') {
+        osc.frequency.value = 600;
+        gain.gain.value = 0.08;
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+        } else if (type === 'hapus') {
+        osc.type = 'sawtooth';
+        osc.frequency.value = 200;
+        gain.gain.value = 0.1;
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+        }
+    }
+
+    // Pasang ke semua tombol
+    document.querySelectorAll('.btn-info, .btn-warning, .btn-primary').forEach(btn => {
+        btn.addEventListener('click', () => playSound('click'));
+    });
+
+    document.querySelectorAll('.btn-danger').forEach(btn => {
+        btn.addEventListener('mousedown', () => playSound('hapus'));
     });
 </script>
 </body>
