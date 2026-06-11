@@ -9,10 +9,18 @@ if (isset($_POST['submit'])) {
     $folder      = './img/';
 
     // Upload Gambar
+    // Upload Multiple Gambar
+    $tipe_diizinkan = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
     $nama_gambar = '';
-    if ($_FILES['gambar']['name'] != '') {
-        $nama_gambar = time() . '_' . $_FILES['gambar']['name'];
-        move_uploaded_file($_FILES['gambar']['tmp_name'], $folder . $nama_gambar);
+    if (!empty($_FILES['gambar']['name'])) {
+        $tmp = $_FILES['gambar']['tmp_name'];
+        $tipe = mime_content_type($tmp);
+        if (!in_array($tipe, $tipe_diizinkan)) {
+            die("File yang diizinkan hanya jpg, png, webp yang diizinkan.");
+        }
+        $nama_file = time() . '_' . $_FILES['gambar']['name'];
+        move_uploaded_file($tmp, $folder . $nama_file);
+        $nama_gambar = $nama_file;
     }
 
     // Upload Tanda Tangan
