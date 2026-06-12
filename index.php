@@ -26,6 +26,8 @@ if ($cari != '') {
 <head>
     <title>Pencatatan Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <style>
     .video-bg-wrapper {
@@ -106,14 +108,67 @@ if ($cari != '') {
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
 <script>
-    $(document).ready(function() {
-        $('#tabelBarang').DataTable({
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+$(document).ready(function() {
+    $('#tabelBarang').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+        },
+        dom: '<"row mb-3"<"col-md-6"B><"col-md-6"f>>rtip',
+        buttons: [
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="bi bi-file-pdf"></i> Export PDF',
+                className: 'btn btn-danger btn-sm',
+                title: 'Data Pencatatan Barang',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                exportOptions: {
+                    columns: [0, 1, 2, 3]
+                },
+                customize: function(doc) {
+                    doc.styles.tableHeader.fillColor = '#343a40';
+                    doc.styles.tableHeader.color = 'white';
+                    doc.footer = function(page, pages) {
+                        return {
+                            text: 'Dicetak: ' + new Date().toLocaleDateString('id-ID'),
+                            alignment: 'right',
+                            margin: [0, 0, 20, 0],
+                            fontSize: 9,
+                            color: '#666'
+                        };
+                    };
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                text: '<i class="bi bi-file-excel"></i> Export Excel',
+                className: 'btn btn-success btn-sm',
+                title: 'Data Pencatatan Barang',
+                exportOptions: {
+                    columns: [0, 1, 2, 3]
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="bi bi-printer"></i> Print',
+                className: 'btn btn-secondary btn-sm',
+                title: 'Data Pencatatan Barang',
+                exportOptions: {
+                    columns: [0, 1, 2, 3]
+                }
             }
-        });
+        ]
     });
+});
 </script>
 
 <script>
@@ -149,5 +204,6 @@ if ($cari != '') {
         btn.addEventListener('mousedown', () => playSound('hapus'));
     });
 </script>
+
 </body>
 </html>
