@@ -10,15 +10,7 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != "login") {
 
 include "koneksi.php";
 
-$cari = isset($_GET['cari']) ? mysqli_real_escape_string($conn, $_GET['cari']) : '';
-
-if ($cari != '') {
-    $query = mysqli_query($conn, "SELECT * FROM barang 
-        WHERE kode LIKE '%$cari%' OR nama_barang LIKE '%$cari%' 
-        ORDER BY id DESC");
-} else {
-    $query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
-}
+$query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
 ?>
 
 <!DOCTYPE html>
@@ -46,6 +38,10 @@ if ($cari != '') {
 </head>
 
 <body class="bg-light">
+<nav class="navbar navbar-dark bg-dark px-4 mb-4">
+    <a class="navbar-brand fw-bold" href="index.php">SIMANGU</a>
+    <a href="logout.php" class="btn btn-danger" onclick="return confirm('Yakin Mau Keluar?')">Log Out</a>
+</nav>
 
 <div class="video-bg-wrapper">
     <video autoplay muted loop playsinline>
@@ -53,11 +49,9 @@ if ($cari != '') {
     </video>
 </div>
 
-<div class="container mt-5">
     <h2 class="mb-4">Data Pencatatan Barang</h2>
 
     <a href="tambah.php" class="btn btn-primary mb-3">Tambah Barang</a>
-    <a href="logout.php" class="btn btn-danger" onclick="return confirm('Yakin ingin keluar?')">Logout</a>
 
     <table class="table table-bordered table-striped" id="tabelBarang">
         <thead class="table-dark">
@@ -171,39 +165,9 @@ $(document).ready(function() {
 });
 </script>
 
-<script>
-    // Buat AudioContext sekali pakai
-    function playSound(type) {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        if (type === 'click') {
-        osc.frequency.value = 600;
-        gain.gain.value = 0.08;
-        osc.start();
-        osc.stop(ctx.currentTime + 0.08);
-        } else if (type === 'hapus') {
-        osc.type = 'sawtooth';
-        osc.frequency.value = 200;
-        gain.gain.value = 0.1;
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.3);
-        }
-    }
-
-    // Pasang ke semua tombol
-    document.querySelectorAll('.btn-info, .btn-warning, .btn-primary').forEach(btn => {
-        btn.addEventListener('click', () => playSound('click'));
-    });
-
-    document.querySelectorAll('.btn-danger').forEach(btn => {
-        btn.addEventListener('mousedown', () => playSound('hapus'));
-    });
-</script>
+<audio autoplay loop>
+    <source src="audio/myaudio.mp3" type="audio/mpeg">
+</audio>
 
 </body>
 </html>
