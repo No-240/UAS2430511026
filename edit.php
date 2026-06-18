@@ -9,6 +9,7 @@ if (isset($_POST['submit'])) {
 
     $kode        = mysqli_real_escape_string($conn, $_POST['kode']);
     $nama_barang = mysqli_real_escape_string($conn, $_POST['nama_barang']);
+    $kategori    = mysqli_real_escape_string($conn, $_POST['kategori']);
     $stok        = (int) $_POST['stok'];
     $folder      = './img/';
 
@@ -29,7 +30,7 @@ if (isset($_POST['submit'])) {
     }
 
     mysqli_query($conn, "UPDATE barang SET
-        kode='$kode', nama_barang='$nama_barang', stok=$stok,
+        kode='$kode', nama_barang='$nama_barang', kategori='$kategori', stok=$stok,
         gambar='$nama_gambar', tanda_tangan='$nama_ttd'
         WHERE id=$id");
 
@@ -59,6 +60,18 @@ if (isset($_POST['submit'])) {
         <div class="mb-3">
             <label>Nama Barang</label>
             <input type="text" name="nama_barang" class="form-control" value="<?= htmlspecialchars($data['nama_barang']) ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="kategori" class="form-label">Kategori</label>
+            <select name="kategori" id="kategori" class="form-select" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="Mudah Pecah">Mudah Pecah</option>
+                <option value="Tahan Banting">Tahan Banting</option>
+                <option value="Elektronik">Elektronik</option>
+                <option value="Makanan">Makanan</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
         </div>
 
         <div class="mb-3">

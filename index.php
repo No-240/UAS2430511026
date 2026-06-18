@@ -16,6 +16,8 @@ $query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pencatatan Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css">
@@ -32,7 +34,7 @@ $query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
     .video-bg-wrapper video {
         width: 100%; height: 100%;
         object-fit: cover;
-        opacity: 0.15; /* sesuaikan gelap/terangnya */
+        opacity: 0.20; /* sesuaikan gelap/terangnya */
     }
     </style>
 </head>
@@ -49,6 +51,7 @@ $query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
     </video>
 </div>
 
+<div>
     <h2 class="mb-4">Data Pencatatan Barang</h2>
 
     <a href="tambah.php" class="btn btn-primary mb-3">Tambah Barang</a>
@@ -59,6 +62,7 @@ $query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
                 <th>No</th>
                 <th>Kode</th>
                 <th>Nama Barang</th>
+                <th>Kategori</th>
                 <th>Stok</th>
                 <th>Gambar</th>
                 <th>Tanda Tangan</th>
@@ -72,6 +76,7 @@ $query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
                 <td><?= $no++ ?></td>
                 <td><?= htmlspecialchars($data['kode']) ?></td>
                 <td><?= htmlspecialchars($data['nama_barang']) ?></td>
+                <td><?= htmlspecialchars($data['kategori']) ?></td>                
                 <td><?= $data['stok'] ?></td>
                 <td>
                     <?php if ($data['gambar']): ?>
@@ -165,8 +170,8 @@ $(document).ready(function() {
 });
 </script>
 
-<audio autoplay loop>
-    <source src="audio/myaudio.mp3" type="audio/mpeg">
+<audio controls loop style="position:fixed; bottom:10px; right:10px; opacity:0.8; height:30px;">
+     <source src="audio/myaudio.mp3" type="audio/mpeg">
 </audio>
 
 </body>

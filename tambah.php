@@ -5,6 +5,7 @@ if (isset($_POST['submit'])) {
 
     $kode        = mysqli_real_escape_string($conn, $_POST['kode']);
     $nama_barang = mysqli_real_escape_string($conn, $_POST['nama_barang']);
+    $kategori    = mysqli_real_escape_string($conn, $_POST['kategori']);
     $stok        = (int) $_POST['stok'];
     $folder      = './img/';
 
@@ -34,8 +35,8 @@ if (isset($_POST['submit'])) {
         file_put_contents($folder . $nama_ttd, base64_decode($ttd_bersih));
     }
 
-    mysqli_query($conn, "INSERT INTO barang (kode, nama_barang, stok, gambar, tanda_tangan)
-        VALUES ('$kode', '$nama_barang', $stok, '$nama_gambar', '$nama_ttd')");
+    mysqli_query($conn, "INSERT INTO barang (kode, nama_barang, kategori, stok, gambar, tanda_tangan)
+        VALUES ('$kode', '$nama_barang', '$kategori', $stok, '$nama_gambar', '$nama_ttd')");
 
     header("Location: index.php");
     exit;
@@ -63,6 +64,18 @@ if (isset($_POST['submit'])) {
         <div class="mb-3">
             <label>Nama Barang</label>
             <input type="text" name="nama_barang" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="kategori" class="form-label">Kategori</label>
+            <select name="kategori" id="kategori" class="form-select" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="Mudah Pecah">Mudah Pecah</option>
+                <option value="Tahan Banting">Tahan Banting</option>
+                <option value="Elektronik">Elektronik</option>
+                <option value="Makanan">Makanan</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
         </div>
 
         <div class="mb-3">
