@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
     mysqli_query($conn, "INSERT INTO barang (kode, nama_barang, kategori, stok, gambar, tanda_tangan)
         VALUES ('$kode', '$nama_barang', '$kategori', $stok, '$nama_gambar', '$nama_ttd')");
 
-    header("Location: index.php");
+    header("Location: index.php?status=add");
     exit;
 }
 ?>

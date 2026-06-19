@@ -19,6 +19,6 @@ if ($data['tanda_tangan'] && file_exists($folder . $data['tanda_tangan'])) {
 // Hapus data dari database
 mysqli_query($conn, "DELETE FROM barang WHERE id=$id");
 
-header("Location: index.php");
+header("Location: index.php?status=delete");
 exit;
 ?>

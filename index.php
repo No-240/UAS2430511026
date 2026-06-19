@@ -23,20 +23,6 @@ $query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <style>
-    .video-bg-wrapper {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        z-index: -1;
-        overflow: hidden;
-    }
-    .video-bg-wrapper video {
-        width: 100%; height: 100%;
-        object-fit: cover;
-        opacity: 0.20; /* sesuaikan gelap/terangnya */
-    }
-    </style>
 </head>
 
 <body class="bg-light">
@@ -45,16 +31,11 @@ $query = mysqli_query($conn, "SELECT * FROM barang ORDER BY id DESC");
     <a href="logout.php" class="btn btn-danger" onclick="return confirm('Yakin Mau Keluar?')">Log Out</a>
 </nav>
 
-<div class="video-bg-wrapper">
-    <video autoplay muted loop playsinline>
-        <source src="video/13752081_3840_2160_30fps.mp4" type="video/mp4">
-    </video>
-</div>
-
-<div>
+<div class="container py-4">
     <h2 class="mb-4">Data Pencatatan Barang</h2>
 
-    <a href="tambah.php" class="btn btn-primary mb-3">Tambah Barang</a>
+    <a href="tambah.php" class="btn btn-primary mb-3 me-2">Tambah Barang</a>
+    <a href="keluar.php" class="btn btn-primary mb-3">Barang Keluar</a>
 
     <table class="table table-bordered table-striped" id="tabelBarang">
         <thead class="table-dark">
@@ -131,7 +112,7 @@ $(document).ready(function() {
                 orientation: 'landscape',
                 pageSize: 'A4',
                 exportOptions: {
-                    columns: [0, 1, 2, 3]
+                    columns: [0, 1, 2, 3, 4]
                 },
                 customize: function(doc) {
                     doc.styles.tableHeader.fillColor = '#343a40';
@@ -167,12 +148,56 @@ $(document).ready(function() {
             }
         ]
     });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+
+    console.log('Status dari URL:', status); // Untuk debug
+
+    if (status === 'add' || status === 'delete') {
+        // Cek apakah elemen modal ada
+        const modalElement = document.getElementById('modalSukses');
+        if (modalElement) {
+            try {
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+                console.log('Modal ditampilkan');
+
+                // Putar audio
+                const audio = document.getElementById('audioSukses');
+                if (audio) {
+                    audio.play().catch(e => console.log('Autoplay diblokir:', e));
+                } else {
+                    console.warn('Audio element tidak ditemukan');
+                }
+
+                // Hapus parameter dari URL agar tidak muncul lagi saat refresh
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } catch (error) {
+                console.error('Error saat menampilkan modal:', error);
+            }
+        } else {
+            console.error('Modal dengan id "modalSukses" tidak ditemukan di DOM');
+        }
+    }
 });
 </script>
 
-<audio controls loop style="position:fixed; bottom:10px; right:10px; opacity:0.8; height:30px;">
-     <source src="audio/myaudio.mp3" type="audio/mpeg">
-</audio>
+<!-- Modal Pop-up Sukses -->
+<div class="modal fade" id="modalSukses" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-4">
+                <!-- GIF -->
+                <img src="video/sukses.gif" alt="Sukses" class="img-fluid mb-3" style="max-width: 200px;">
+                <!-- Audio (autoplay saat modal muncul) -->
+                <audio id="audioSukses" src="audio/sukses.mp3" preload="auto"></audio>
+                <h4 class="mb-3">Operasi Berhasil!</h4>
+                <button class="btn btn-primary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
